@@ -148,8 +148,28 @@ document.getElementById("timezone").innerText =
   "Time zone: " + Intl.DateTimeFormat().resolvedOptions().timeZone;
 </script>
 
-fetch("https://api.ipify.org?format=json")
-  .then(res => res.json())
-  .then(data => {
-    console.log("IPv4:", data.ip);
-  });
+<script>
+async function getIPs() {
+  // IPv4
+  fetch("https://api4.ipify.org?format=json")
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("ipv4").innerText = data.ip;
+    })
+    .catch(() => {
+      document.getElementById("ipv4").innerText = "Unavailable";
+    });
+
+  // IPv6
+  fetch("https://api6.ipify.org?format=json")
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("ipv6").innerText = data.ip;
+    })
+    .catch(() => {
+      document.getElementById("ipv6").innerText = "Not detected";
+    });
+}
+
+getIPs();
+</scrip
