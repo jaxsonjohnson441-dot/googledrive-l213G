@@ -91,3 +91,11 @@ fetch("https://api64.ipify.org?format=json")
     document.getElementById("ip").innerText = "IP: " + data.ip;
   });
 </script>
+
+
+<p id="info"></p>
+
+<script>
+document.getElementById("info").innerText =
+  "Device info: " + navigator.userAgent;
+</script>
