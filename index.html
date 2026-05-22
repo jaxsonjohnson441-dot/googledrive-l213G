@@ -109,7 +109,14 @@ updateConnection();
 // Timezone
 document.getElementById("timezone").innerText =
   "Time zone: " + Intl.DateTimeFormat().resolvedOptions().timeZone;
+function maskIPv6Half(ip) {
+  if (!ip || !ip.includes(":")) return ip;
 
+  let parts = ip.split(":");
+  let half = Math.floor(parts.length / 2);
+
+  return parts.slice(0, half).join(":") + ":****:****:****:****";
+}
 // IPv4 + IPv6
 function getIPs() {
   fetch("https://api4.ipify.org?format=json")
@@ -119,7 +126,7 @@ function getIPs() {
 
   fetch("https://api6.ipify.org?format=json")
     .then(r => r.json())
-    .then(d => document.getElementById("ipv6").innerText = d.ip)
+    .then(d => .then(d => document.getElementById("ipv6").innerText = maskIPv6Half(d.ip))
     .catch(() => document.getElementById("ipv6").innerText = "Not available");
 }
 function maskIPv6Half(ip) {
