@@ -1,30 +1,32 @@
 <head>
-  <title>My Cool Website</title>
+  <title>rip dont be a weirdo and gossip</title>
 </head>
 
 <!DOCTYPE html>
 <html>
 <body>
   <h1>My Website</h1>
-  <p>This is running locally on my diddyballs.</p>
+  <p>This is running locally on my pc.</p>
 </body>
 </html>
 
 <!DOCTYPE html>
 <html>
 <head>
-  <title>OS Checker</title>
+  <title>Device + Internet Info</title>
 </head>
 <body>
 
-<h1>Your Operating System:</h1>
+<h1>Your Device Info</h1>
+
 <p id="os"></p>
+<p id="internet"></p>
 
 <script>
+  // OS detection (fixed version)
   let os = "Unknown OS";
   let userAgent = navigator.userAgent;
 
-  // IMPORTANT: check iPhone/iPad FIRST
   if (userAgent.indexOf("iPhone") !== -1 || userAgent.indexOf("iPad") !== -1) {
     os = "iOS";
   } 
@@ -41,7 +43,23 @@
     os = "Linux";
   }
 
-  document.getElementById("os").innerText = os;
+  document.getElementById("os").innerText = "Operating System: " + os;
+
+  // Internet connection status
+  function updateInternetStatus() {
+    if (navigator.onLine) {
+      document.getElementById("internet").innerText = "Internet: Online";
+    } else {
+      document.getElementById("internet").innerText = "Internet: Offline";
+    }
+  }
+
+  // run once when page loads
+  updateInternetStatus();
+
+  // update when connection changes
+  window.addEventListener("online", updateInternetStatus);
+  window.addEventListener("offline", updateInternetStatus);
 </script>
 
 </body>
