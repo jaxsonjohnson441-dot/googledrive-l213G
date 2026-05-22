@@ -1,205 +1,36 @@
-<head>
-  <title>rip dont be a weirdo and gossip</title>
-</head>
-
-<!DOCTYPE html>
-<html>
-<body>
-  <h1>My Website</h1>
-  <p>This is running locally on my pc.</p>
-</body>
-</html>
-
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Device + Internet Ping</title>
+  <title>Device + Network Status</title>
+  <style>
+    #ipContainer {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .ipBox {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-family: monospace;
+    }
+  </style>
 </head>
+
 <body>
 
 <h1>Network Status</h1>
 
 <p id="os"></p>
 <p id="internet"></p>
-<p id="ping">Ping: ...</p>
+<p id="ping"></p>
 
-<script>
-  // OS detection
-  let os = "Unknown OS";
-  let userAgent = navigator.userAgent;
-
-  if (userAgent.indexOf("iPhone") !== -1 || userAgent.indexOf("iPad") !== -1) {
-    os = "iOS";
-  } 
-  else if (userAgent.indexOf("Android") !== -1) {
-    os = "Android";
-  } 
-  else if (userAgent.indexOf("Windows") !== -1) {
-    os = "Windows";
-  } 
-  else if (userAgent.indexOf("Mac") !== -1) {
-    os = "macOS";
-  } 
-  else if (userAgent.indexOf("Linux") !== -1) {
-    os = "Linux";
-  }
-
-  document.getElementById("os").innerText = "OS: " + os;
-
-  // Internet status
-  function updateInternet() {
-    document.getElementById("internet").innerText =
-      "Internet: " + (navigator.onLine ? "Online" : "Offline");
-  }
-
-  updateInternet();
-  window.addEventListener("online", updateInternet);
-  window.addEventListener("offline", updateInternet);
-
-  // Fake real ping test using a fast request
-  async function measurePing() {
-    const start = performance.now();
-
-    try {
-      // lightweight request to a reliable endpoint
-      await fetch("https://www.google.com/favicon.ico", { cache: "no-store", mode: "no-cors" });
-      const end = performance.now();
-
-      const ping = Math.round(end - start);
-      document.getElementById("ping").innerText = "Ping: " + ping + " ms";
-    } catch (e) {
-      document.getElementById("ping").innerText = "Ping: Error";
-    }
-  }
-
-  // run immediately
-  measurePing();
-
-  // update every 5 seconds
-  setInterval(measurePing, 5000);
-</script>
-
-</body>
-</html>
-
-<p id="ip">Loading IP...</p>
-
-<script>
-fetch("https://api64.ipify.org?format=json")
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById("ip").innerText = "IP: " + data.ip;
-  });
-</script>
-
-
-<p id="info"></p>
-
-<script>
-document.getElementById("info").innerText =
-  "Device info: " + navigator.userAgent;
-</script>
-
-
-<p id="ip">Loading IP...</p>
-<p id="geo">Loading location...</p>
-<p id="isp">Loading ISP...</p>
-<p id="connection">Connection: ...</p>
+<p id="geo"></p>
+<p id="isp"></p>
+<p id="connection"></p>
 <p id="timezone"></p>
-
-<script>
-// IP + ISP + location (via ipapi)
-fetch("https://ipapi.co/json/")
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById("ip").innerText = "IP: " + data.ip;
-
-    document.getElementById("geo").innerText =
-      `Location: ${data.city}, ${data.region}, ${data.country_name}`;
-
-    document.getElementById("isp").innerText =
-      "ISP: " + data.org;
-  })
-  .catch(() => {
-    document.getElementById("geo").innerText = "Location: unavailable";
-  });
-
-// Connection type (WiFi / cellular / etc.)
-function updateConnection() {
-  const conn = navigator.connection ||
-               navigator.mozConnection ||
-               navigator.webkitConnection;
-
-  if (!conn) {
-    document.getElementById("connection").innerText =
-      "Connection: not supported";
-    return;
-  }
-
-  document.getElementById("connection").innerText =
-    "Connection: " + (conn.effectiveType || "unknown") +
-    " (" + conn.type + ")";
-}
-
-updateConnection();
-
-// Time zone
-document.getElementById("timezone").innerText =
-  "Time zone: " + Intl.DateTimeFormat().resolvedOptions().timeZone;
-</script>
-
-
-<script>
-async function getIPs() {
-  // IPv4
-  fetch("https://api4.ipify.org?format=json")
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("ipv4").innerText = data.ip;
-    })
-    .catch(() => {
-      document.getElementById("ipv4").innerText = "Unavailable";
-    });
-
-  // IPv6
-  fetch("https://api6.ipify.org?format=json")
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("ipv6").innerText = data.ip;
-    })
-    .catch(() => {
-      document.getElementById("ipv6").innerText = "Not detected";
-    });
-}
-
-getIPs();
-</scrip
-
-
-
-<script>
-function getIPs() {
-  fetch("https://api4.ipify.org?format=json")
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("ipv4").innerText = data.ip;
-    })
-    .catch(() => {
-      document.getElementById("ipv4").innerText = "Not available";
-    });
-
-  fetch("https://api6.ipify.org?format=json")
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("ipv6").innerText = data.ip;
-    })
-    .catch(() => {
-      document.getElementById("ipv6").innerText = "Not available";
-    });
-}
-
-getIPs();
-</script>
 
 <div id="ipContainer">
   <div class="ipBox">
@@ -212,3 +43,86 @@ getIPs();
     <p id="ipv6">—</p>
   </div>
 </div>
+
+<script>
+// OS
+let os = "Unknown OS";
+let ua = navigator.userAgent;
+
+if (ua.includes("iPhone") || ua.includes("iPad")) os = "iOS";
+else if (ua.includes("Android")) os = "Android";
+else if (ua.includes("Windows")) os = "Windows";
+else if (ua.includes("Mac")) os = "macOS";
+else if (ua.includes("Linux")) os = "Linux";
+
+document.getElementById("os").innerText = "OS: " + os;
+
+// Internet
+function updateInternet() {
+  document.getElementById("internet").innerText =
+    "Internet: " + (navigator.onLine ? "Online" : "Offline");
+}
+updateInternet();
+window.addEventListener("online", updateInternet);
+window.addEventListener("offline", updateInternet);
+
+// Ping
+async function measurePing() {
+  const start = performance.now();
+  try {
+    await fetch("https://www.google.com/favicon.ico", { mode: "no-cors", cache: "no-store" });
+    const end = performance.now();
+    document.getElementById("ping").innerText =
+      "Ping: " + Math.round(end - start) + " ms";
+  } catch {
+    document.getElementById("ping").innerText = "Ping: Error";
+  }
+}
+measurePing();
+setInterval(measurePing, 5000);
+
+// IP + ISP + location
+fetch("https://ipapi.co/json/")
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById("geo").innerText =
+      `Location: ${data.city}, ${data.region}, ${data.country_name}`;
+
+    document.getElementById("isp").innerText =
+      "ISP: " + data.org;
+  });
+
+// Connection
+function updateConnection() {
+  const c = navigator.connection;
+  if (!c) {
+    document.getElementById("connection").innerText = "Connection: not supported";
+    return;
+  }
+  document.getElementById("connection").innerText =
+    "Connection: " + (c.effectiveType || "unknown");
+}
+updateConnection();
+
+// Timezone
+document.getElementById("timezone").innerText =
+  "Time zone: " + Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+// IPv4 + IPv6
+function getIPs() {
+  fetch("https://api4.ipify.org?format=json")
+    .then(r => r.json())
+    .then(d => document.getElementById("ipv4").innerText = d.ip)
+    .catch(() => document.getElementById("ipv4").innerText = "Not available");
+
+  fetch("https://api6.ipify.org?format=json")
+    .then(r => r.json())
+    .then(d => document.getElementById("ipv6").innerText = d.ip)
+    .catch(() => document.getElementById("ipv6").innerText = "Not available");
+}
+getIPs();
+
+</script>
+
+</body>
+</html>
