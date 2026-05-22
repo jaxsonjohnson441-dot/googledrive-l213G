@@ -100,3 +100,50 @@ document.getElementById("info").innerText =
   "Device info: " + navigator.userAgent;
 </script>
 
+
+<p id="ip">Loading IP...</p>
+<p id="geo">Loading location...</p>
+<p id="isp">Loading ISP...</p>
+<p id="connection">Connection: ...</p>
+<p id="timezone"></p>
+
+<script>
+// IP + ISP + location (via ipapi)
+fetch("https://ipapi.co/json/")
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("ip").innerText = "IP: " + data.ip;
+
+    document.getElementById("geo").innerText =
+      `Location: ${data.city}, ${data.region}, ${data.country_name}`;
+
+    document.getElementById("isp").innerText =
+      "ISP: " + data.org;
+  })
+  .catch(() => {
+    document.getElementById("geo").innerText = "Location: unavailable";
+  });
+
+// Connection type (WiFi / cellular / etc.)
+function updateConnection() {
+  const conn = navigator.connection ||
+               navigator.mozConnection ||
+               navigator.webkitConnection;
+
+  if (!conn) {
+    document.getElementById("connection").innerText =
+      "Connection: not supported";
+    return;
+  }
+
+  document.getElementById("connection").innerText =
+    "Connection: " + (conn.effectiveType || "unknown") +
+    " (" + conn.type + ")";
+}
+
+updateConnection();
+
+// Time zone
+document.getElementById("timezone").innerText =
+  "Time zone: " + Intl.DateTimeFormat().resolvedOptions().timeZone;
+</script>
