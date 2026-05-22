@@ -117,10 +117,10 @@ function redactHalf(ip) {
 }
 // IPv4 + IPv6
 function getIPs() {
-  fetch("https://api4.ipify.org?format=json")
-    .then(r => r.json())
-    .then(d => document.getElementById("ipv4").innerText = d.ip)
-    .catch(() => document.getElementById("ipv4").innerText = "Not available");
+fetch("https://api4.ipify.org?format=json")
+  .then(r => r.json())
+  .then(d => document.getElementById("ipv4").innerText = redactHalf(d.ip))
+  .catch(() => document.getElementById("ipv4").innerText = "Not available");
 
 fetch("https://api6.ipify.org?format=json")
   .then(r => r.json())
@@ -129,7 +129,7 @@ fetch("https://api6.ipify.org?format=json")
 }
 
 getIPs();
-
+<p id=""></p>
 </script>
 
 </body>
