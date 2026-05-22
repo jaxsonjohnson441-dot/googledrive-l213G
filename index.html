@@ -80,20 +80,7 @@ async function measurePing() {
 }
 measurePing();
 setInterval(measurePing, 5000);
-function maskIPv6Half(ip) {
-  if (!ip || !ip.includes(":")) return ip;
 
-  // expand into blocks (simple split)
-  let parts = ip.split(":");
-
-  // handle compressed IPv6 (::) by normalizing missing parts
-  // (we'll just treat what we have safely for display)
-  const half = Math.floor(parts.length / 2);
-
-  const visible = parts.slice(0, half);
-  const hidden = parts.slice(half).map(() => "****");
-
-  return [...visible, ...hidden].join(":");
 // IP + ISP + location
 fetch("https://ipapi.co/json/")
   .then(r => r.json())
