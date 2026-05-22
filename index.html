@@ -1,50 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Device + Network Status</title>
-  <style>
-    #ipContainer {
-      display: flex;
-      gap: 20px;
-      margin-top: 10px;
-    }
+window.onload = function () {
 
-    .ipBox {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      font-family: monospace;
-    }
-  </style>
-</head>
-
-<body>
-
-<h1>Network Status</h1>
-
-<p id="os"></p>
-<p id="internet"></p>
-<p id="ping"></p>
-
-<p id="geo"></p>
-<p id="isp"></p>
-<p id="connection"></p>
-<p id="timezone"></p>
-
-<div id="ipContainer">
-  <div class="ipBox">
-    <h3>IPv4</h3>
-    <p id="ipv4">—</p>
-  </div>
-
-  <div class="ipBox">
-    <h3>IPv6</h3>
-    <p id="ipv6">—</p>
-  </div>
-</div>
-
-<script>
 // OS
 let os = "Unknown OS";
 let ua = navigator.userAgent;
@@ -63,8 +18,6 @@ function updateInternet() {
     "Internet: " + (navigator.onLine ? "Online" : "Offline");
 }
 updateInternet();
-window.addEventListener("online", updateInternet);
-window.addEventListener("offline", updateInternet);
 
 // Ping
 async function measurePing() {
@@ -81,9 +34,7 @@ async function measurePing() {
 measurePing();
 setInterval(measurePing, 5000);
 
-// IP + ISP + location
-
-
+// Location + ISP
 fetch("https://ipapi.co/json/")
   .then(r => r.json())
   .then(data => {
@@ -95,41 +46,30 @@ fetch("https://ipapi.co/json/")
   });
 
 // Connection
-function updateConnection() {
-  const c = navigator.connection;
-  if (!c) {
-    document.getElementById("connection").innerText = "Connection: not supported";
-    return;
-  }
-  document.getElementById("connection").innerText =
-    "Connection: " + (c.effectiveType || "unknown");
-}
-updateConnection();
+const c = navigator.connection;
+document.getElementById("connection").innerText =
+  c ? "Connection: " + (c.effectiveType || "unknown") : "Connection: not supported";
 
 // Timezone
 document.getElementById("timezone").innerText =
   "Time zone: " + Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 // IPv4 + IPv6
-function getIPs() {
-  fetch("https://api4.ipify.org?format=json")
-    .then(r => r.json())
-    .then(d => document.getElementById("ipv4").innerText = d.ip)
-    .catch(() => document.getElementById("ipv4").innerText = "Not available");
-
-  fetch("https://api6.ipify.org?format=json")
-    .then(r => r.json())
-    .then(d => document.getElementById("ipv6").innerText = maskIPv6Half(d.ip);
-    .catch(() => document.getElementById("ipv6").innerText = "Not available");
-}
 function maskIPv6Half(ip) {
+  if (!ip || !ip.includes(":")) return ip;
   let parts = ip.split(":");
   let half = Math.floor(parts.length / 2);
   return parts.slice(0, half).join(":") + ":****:****:****:****";
 }
-getIPs();
 
-</script>
+fetch("https://api4.ipify.org?format=json")
+  .then(r => r.json())
+  .then(d => document.getElementById("ipv4").innerText = d.ip)
+  .catch(() => document.getElementById("ipv4").innerText = "Not available");
 
-</body>
-</html>
+fetch("https://api6.ipify.org?format=json")
+  .then(r => r.json())
+  .then(d => document.getElementById("ipv6").innerText = maskIPv6Half(d.ip))
+  .catch(() => document.getElementById("ipv6").innerText = "Not available");
+
+};
