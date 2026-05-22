@@ -147,3 +147,9 @@ updateConnection();
 document.getElementById("timezone").innerText =
   "Time zone: " + Intl.DateTimeFormat().resolvedOptions().timeZone;
 </script>
+
+fetch("https://api.ipify.org?format=json")
+  .then(res => res.json())
+  .then(data => {
+    console.log("IPv4:", data.ip);
+  });
