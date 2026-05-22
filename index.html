@@ -9,3 +9,35 @@
   <p>This is running locally on my diddyballs.</p>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OS Checker</title>
+</head>
+<body>
+
+<h1>Your Operating System:</h1>
+<p id="os"></p>
+
+<script>
+  let os = "Unknown OS";
+  let userAgent = navigator.userAgent;
+
+  if (userAgent.indexOf("Windows") !== -1) {
+    os = "Windows";
+  } else if (userAgent.indexOf("Mac") !== -1) {
+    os = "macOS";
+  } else if (userAgent.indexOf("Android") !== -1) {
+    os = "Android";
+  } else if (userAgent.indexOf("iPhone") !== -1 || userAgent.indexOf("iPad") !== -1) {
+    os = "iOS";
+  } else if (userAgent.indexOf("Linux") !== -1) {
+    os = "Linux";
+  }
+
+  document.getElementById("os").innerText = os;
+</script>
+
+</body>
+</html>
