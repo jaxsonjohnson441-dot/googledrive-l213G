@@ -24,15 +24,20 @@
   let os = "Unknown OS";
   let userAgent = navigator.userAgent;
 
-  if (userAgent.indexOf("Windows") !== -1) {
-    os = "Windows";
-  } else if (userAgent.indexOf("Mac") !== -1) {
-    os = "macOS";
-  } else if (userAgent.indexOf("Android") !== -1) {
-    os = "Android";
-  } else if (userAgent.indexOf("iPhone") !== -1 || userAgent.indexOf("iPad") !== -1) {
+  // IMPORTANT: check iPhone/iPad FIRST
+  if (userAgent.indexOf("iPhone") !== -1 || userAgent.indexOf("iPad") !== -1) {
     os = "iOS";
-  } else if (userAgent.indexOf("Linux") !== -1) {
+  } 
+  else if (userAgent.indexOf("Android") !== -1) {
+    os = "Android";
+  } 
+  else if (userAgent.indexOf("Windows") !== -1) {
+    os = "Windows";
+  } 
+  else if (userAgent.indexOf("Mac") !== -1) {
+    os = "macOS";
+  } 
+  else if (userAgent.indexOf("Linux") !== -1) {
     os = "Linux";
   }
 
