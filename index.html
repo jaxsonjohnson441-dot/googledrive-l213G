@@ -81,3 +81,13 @@
 
 </body>
 </html>
+
+<p id="ip">Loading IP...</p>
+
+<script>
+fetch("https://api64.ipify.org?format=json")
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("ip").innerText = "IP: " + data.ip;
+  });
+</script>
