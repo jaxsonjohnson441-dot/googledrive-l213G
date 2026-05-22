@@ -1,73 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>System Info Card</title>
-<style>
-  body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #0f172a;
-    font-family: Arial, sans-serif;
-    color: #e2e8f0;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Device + Network Status</title>
 
-  .card {
-    width: 320px;
-    background: #111827;
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    border: 1px solid #1f2937;
-  }
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0f172a;
+      font-family: Arial, sans-serif;
+      color: #e2e8f0;
+    }
 
-  .title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 12px;
-    color: #38bdf8;
-  }
+    .card {
+      width: 360px;
+      background: #111827;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid #1f2937;
+    }
 
-  .row {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-    border-bottom: 1px solid #1f2937;
-    font-size: 14px;
-  }
+    h1 {
+      font-size: 18px;
+      margin-bottom: 14px;
+      color: #38bdf8;
+    }
 
-  .row:last-child {
-    border-bottom: none;
-  }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid #1f2937;
+      font-size: 14px;
+    }
 
-  .label {
-    color: #94a3b8;
-  }
+    .row:last-child {
+      border-bottom: none;
+    }
 
-  .value {
-    color: #e2e8f0;
-    font-weight: 500;
-  }
+    .label {
+      color: #94a3b8;
+    }
 
-  .status {
-    margin-top: 10px;
-    padding: 6px 10px;
-    background: #16a34a33;
-    color: #4ade80;
-    border-radius: 8px;
-    font-size: 12px;
-    display: inline-block;
-  }
-</style>
+    .value {
+      color: #e2e8f0;
+      font-weight: 500;
+      text-align: right;
+      max-width: 60%;
+      word-break: break-word;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      display: inline-block;
+      background: #16a34a33;
+      color: #4ade80;
+    }
+
+    .offline {
+      background: #ef444433;
+      color: #f87171;
+    }
+  </style>
 </head>
+
 <body>
 
 <div class="card">
-  <div class="title">DEVICE SYSTEM CARD</div>
+  <h1>DEVICE + NETWORK STATUS</h1>
 
   <div class="row">
     <div class="label">Operating System</div>
@@ -80,37 +89,11 @@
   </div>
 
   <div class="row">
-    <div class="label">User Agent</div>
-    <div class="value" id="ua">Detecting...</div>
+    <div class="label">Internet</div>
+    <div class="value" id="internet">Checking...</div>
   </div>
 
-  <div class="status" id="status">Online</div>
-</div>
-
-<script>
-function getOS() {
-  let ua = navigator.userAgent;
-  if (ua.includes("Windows NT 10.0")) return "Windows 10/11";
-  if (ua.includes("Mac")) return "macOS";
-  if (ua.includes("Android")) return "Android";
-  if (ua.includes("iPhone")) return "iOS";
-  return "Unknown";
-}
-
-function getBrowser() {
-  let ua = navigator.userAgent;
-  if (ua.includes("Edg")) return "Microsoft Edge";
-  if (ua.includes("Chrome")) return "Chrome";
-  if (ua.includes("Firefox")) return "Firefox";
-  if (ua.includes("Safari")) return "Safari";
-  return "Unknown";
-}
-
-// Fill data
-document.getElementById("os").innerText = getOS();
-document.getElementById("browser").innerText = getBrowser();
-document.getElementById("ua").innerText = navigator.userAgent;
-</script>
-
-</body>
+  <div class="row">
+    <div class="label">Ping</div>
+    <div class="value" id="ping">Measuring...</div>
 </html>
