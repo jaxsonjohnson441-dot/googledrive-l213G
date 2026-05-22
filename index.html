@@ -119,7 +119,7 @@ function getIPs() {
 
   fetch("https://api6.ipify.org?format=json")
     .then(r => r.json())
-    .then(d => document.getElementById("ipv6").innerText = d.ip)
+    .then(d => document.getElementById("ipv6").innerText = maskIPv6Half(d.ip);
     .catch(() => document.getElementById("ipv6").innerText = "Not available");
 }
 function maskIPv6Half(ip) {
