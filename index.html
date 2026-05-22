@@ -1,99 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Device + Network Status</title>
-
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #0f172a;
-      font-family: Arial, sans-serif;
-      color: #e2e8f0;
-    }
-
-    .card {
-      width: 360px;
-      background: #111827;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      border: 1px solid #1f2937;
-    }
-
-    h1 {
-      font-size: 18px;
-      margin-bottom: 14px;
-      color: #38bdf8;
-    }
-
-    .row {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
-      border-bottom: 1px solid #1f2937;
-      font-size: 14px;
-    }
-
-    .row:last-child {
-      border-bottom: none;
-    }
-
-    .label {
-      color: #94a3b8;
-    }
-
-    .value {
-      color: #e2e8f0;
-      font-weight: 500;
-      text-align: right;
-      max-width: 60%;
-      word-break: break-word;
-    }
-
-    .status {
-      margin-top: 12px;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      display: inline-block;
-      background: #16a34a33;
-      color: #4ade80;
-    }
-
-    .offline {
-      background: #ef444433;
-      color: #f87171;
-    }
-  </style>
+  <title>rip dont be a weirdo and gossip</title>
 </head>
 
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>My Website</h1>
+  <p>This is running locally on my pc.</p>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Device + Internet Ping</title>
+</head>
 <body>
 
-<div class="card">
-  <h1>DEVICE + NETWORK STATUS</h1>
+<h1>Network Status</h1>
 
-  <div class="row">
-    <div class="label">Operating System</div>
-    <div class="value" id="os">Detecting...</div>
-  </div>
+<p id="os"></p>
+<p id="internet"></p>
+<p id="ping">Ping: ...</p>
 
-  <div class="row">
-    <div class="label">Browser</div>
-    <div class="value" id="browser">Detecting...</div>
-  </div>
+<script>
+  // OS detection
+  let os = "Unknown OS";
+  let userAgent = navigator.userAgent;
 
-  <div class="row">
-    <div class="label">Internet</div>
-    <div class="value" id="internet">Checking...</div>
-  </div>
+  if (userAgent.indexOf("iPhone") !== -1 || userAgent.indexOf("iPad") !== -1) {
+    os = "iOS";
+  } 
+  else if (userAgent.indexOf("Android") !== -1) {
+    os = "Android";
+  } 
+  else if (userAgent.indexOf("Windows") !== -1) {
+    os = "Windows";
+  } 
+  else if (userAgent.indexOf("Mac") !== -1) {
+    os = "macOS";
+  } 
+  else if (userAgent.indexOf("Linux") !== -1) {
+    os = "Linux";
+  }
 
-  <div class="row">
-    <div class="label">Ping</div>
-    <div class="value" id="ping">Measuring...</div>
+  document.getElementById("os").innerText = "OS: " + os;
+
+  // Internet status
+  function updateInternet() {
+    document.getElementById("internet").innerText =
+      "Internet: " + (navigator.onLine ? "Online" : "Offline");
+  }
+
+  updateInternet();
+  window.addEventListener("online", updateInternet);
+  window.addEventListener("offline", updateInternet);
+
+  // Fake real ping test using a fast request
+  async function measurePing() {
+    const start = performance.now();
+
+    try {
+      // lightweight request to a reliable endpoint
+      await fetch("https://www.google.com/favicon.ico", { cache: "no-store", mode: "no-cors" });
+      const end = performance.now();
+
+      const ping = Math.round(end - start);
+      document.getElementById("ping").innerText = "Ping: " + ping + " ms";
+    } catch (e) {
+      document.getElementById("ping").innerText = "Ping: Error";
+    }
+  }
+
+  // run immediately
+  measurePing();
+
+  // update every 5 seconds
+  setInterval(measurePing, 5000);
+</script>
+
+</body>
 </html>
+
+<p id="ip">Loading IP...</p>
+
+<script>
+fetch("https://api64.ipify.org?format=json")
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("ip").innerText = "IP: " + data.ip;
+  });
+</script>
+
+
+<p id="info"></p>
+
+<script>
+document.getElementById("info").innerText =
+  "Device info: " + navigator.userAgent;
+</script>
+
