@@ -120,7 +120,8 @@ function getIPs() {
   fetch("https://api6.ipify.org?format=json")
     .then(r => r.json())
     .then(d => document.getElementById("ipv6").innerText = d.ip)
-    }
+    .catch(() => document.getElementById("ipv6").innerText = "Not available");
+}
 function maskIPv6Half(ip) {
   let parts = ip.split(":");
   let half = Math.floor(parts.length / 2);
@@ -128,13 +129,8 @@ function maskIPv6Half(ip) {
 }
 getIPs();
 
-<p>
-your such a loser. find a hobby, whole ass police investigation and your still posting ts your lame.
-i can find out who you are with this information btw
-im giving you a chance to stop now or i will turn you in gng this aint no joke your toying with peoples mental health bro.
-</p>
 </script>
-
+<p id="message">you are a cocksucker</p>
 </body>
 </html>
 
